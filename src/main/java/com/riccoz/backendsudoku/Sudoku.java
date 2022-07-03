@@ -26,6 +26,7 @@ public class Sudoku {
     }
 
     public boolean checkSudokufull() {
+
         if(checkSudoku_horizontal_full() && checkSudoku_vertical_full() && checkSudoku_square_full()) {
             return true;
         }
@@ -139,5 +140,7 @@ public class Sudoku {
                 }
             }
         }
+
+        return null;
     }
 }
