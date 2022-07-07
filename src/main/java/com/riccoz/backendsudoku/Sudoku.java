@@ -14,6 +14,15 @@ public class Sudoku {
         }
     }
 
+    public void display() {
+        for(int i = 0; i < sudokuarray.length; i++) {
+            for(int z = 0; z < sudokuarray.length; z++) {
+                System.out.print(sudokuarray[i][z]);
+            }
+            System.out.println();
+        }
+    }
+
     public String getSudokuString() {
         String sudstring = "";
         for (int i = 0; i < sudokuarray.length; i++) {
@@ -34,7 +43,7 @@ public class Sudoku {
     }
 
     public boolean checkSudoku(int posX, int posY) {
-        if(checkSudoku_vertical(posX) && checkSudoku_horizontal(posY) && checkSudoku_square(posX, posY)) {
+        if(checkSudoku_vertical(posY) && checkSudoku_horizontal(posX) && checkSudoku_square(posY, posX)) {
             return true;
         }
         return false;
@@ -123,24 +132,44 @@ public class Sudoku {
         return true;
     }
 
-    public int[][] solve() {
+    public Sudoku solve() {
+        if(checkSudokufull()) {
+            System.out.println("Darf so existieren");
+        } else {
+            System.out.println("Darf definitiv so nicht existieren");
+        }
 
-        return sudokuarray;
+        _solve(this, 0 ,0);
+        display();
+        return null;
     }
 
-    public Sudoku _solve(Sudoku array, int posX, int posY) {
-        int numb = 0;
+    public boolean _solve(Sudoku array, int posY, int posX) {
+        if(posX > 8) {
+            posX = 0;
+            posY++;
+        }
 
-        for (int i = posX; i < array.sudokuarray.length; i++) {
-            for (int z = posY; z < array.sudokuarray.length; z++) {
-                numb++;
-                array.sudokuarray[i][z] = numb;
-                if (array.checkSudoku(posX, posY)) {
-                    System.out.println("nicht möglich");
+        for (int i = posY; i < array.sudokuarray.length; i++) {
+            for (int z = posX; z < array.sudokuarray.length; z++) {
+                if(array.sudokuarray[i][z] == 0) {
+                    for(int num = 1; num <= 9 ; num++) {
+                        array.sudokuarray[i][z] = num;
+                        display();
+                        if(checkSudoku(i,z)) {
+                            System.out.println("Darf, also gehts weiter!");
+                            if(_solve(array,i ,z+1)) {
+                                return true;
+                            }
+                        }
+                        System.out.println("Darf scheinbar nicht, also gehts nicht weiter!");
+                    }
+                    array.sudokuarray[i][z] = 0;
+                    return false;
                 }
             }
         }
 
-        return null;
+        return true;
     }
 }
