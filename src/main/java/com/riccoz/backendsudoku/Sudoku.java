@@ -138,15 +138,12 @@ public class Sudoku {
     }
 
     public Sudoku solve() {
-        if(checkSudokufull()) {
-            System.out.println("Darf so existieren");
-        } else {
-            System.out.println("Darf definitiv so nicht existieren");
+        if(!checkSudokufull()) {
+            return null;
         }
 
         _solve(this, 0 ,0);
-        display();
-        return null;
+        return this;
     }
 
     public boolean _solve(Sudoku array, int row, int column) {
@@ -159,14 +156,11 @@ public class Sudoku {
             for (int z = column; z < array.sudokuarray.length; z++) {
                 if(array.sudokuarray[i][z] == 0) {
                     for(int num = 1; num <= 9 ; num++) {
-                        display();
                         if(checkSudoku_full_position(this, i, z, num)) {
-                            System.out.println("Darf, also gehts weiter!");
                             if(_solve(array,i ,z+1)) {
                                 return true;
                             }
                         }
-                        System.out.println("Darf scheinbar nicht, also gehts nicht weiter!");
                     }
                     array.sudokuarray[i][z] = 0;
                     return false;

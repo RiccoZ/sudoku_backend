@@ -14,8 +14,8 @@ public class MainController {
 
         Sudoku sud1 = new Sudoku(sudokustring);
 
-        sud1.solve();
+        String s = sud1.solve().getSudokuString();
 
-        return ResponseEntity.ok(sud1.getSudokuString());
+        return ResponseEntity.ok(s);
     }
 }
